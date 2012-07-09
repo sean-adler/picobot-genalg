@@ -160,7 +160,7 @@ class Picobot:
             self.step()
 
 
-# Done with class methods. Now we need functions to run the simulation.
+### Done with class methods. Now we need functions to run the simulation.
 
 def massCreate(popsize):
     """Takes an integer and returns a list containing the specified
@@ -203,8 +203,7 @@ def GA(popsize, generations):
     while generationCount != generations:
         avgFitness = 0
         fitnessList = []
-        # evaluate fitness of each program:
-        # run evaluateFitness for 20 random trials of 800 steps each
+        # evaluate fitness of each program and store results with programs in a list
         for program in progList:
             fitnessList.append((evaluateFitness(program, TRIALS, ROWS*COLUMNS*2), program))
         fitnessList.sort() # sort by first element of tuple -- fitness
@@ -215,19 +214,15 @@ def GA(popsize, generations):
             avgFitness += program[0]
         avgFitness /= popsize
         # get #1 top performer
-        print "Generation " + str(generationCount)
-        # print "Fitness list length: " + str(len(fitnessList))
+        print "GENERATION " + str(generationCount)
         print "\tAverage Program: " + str(avgFitness)
-        print "\tTop Program: " + str(max(fitnessList)[0])
+        print "\tBest Program: " + str(max(fitnessList)[0])
 
-        # get top performers -- cutoff is global TOPFRACTION
+        # get top performers -- cutoff is determined by global var TOPFRACTION
         topFitness = fitnessList[0:int(len(fitnessList)*TOPFRACTION)]
-        # print "TopFitness[0]: " + str(topFitness[0])
 
         # breed programs to create new generation of size 'popsize'
-        # generationCount += 1
         newPopulation = []
-
         while len(newPopulation) != popsize:
             daddyProgram = random.choice(topFitness)[1]
             mommyProgram = random.choice(topFitness)[1]
@@ -247,6 +242,6 @@ def GA(popsize, generations):
     print "Master Program from " + str(generations) + " generations of breeding: "
     print "\tFitness: " + str(max(fitnessList)[0])
     print
-    # return the Master Program, and HOOK IT UP TO SKYNET
+    # return the Master Program and HOOK IT UP TO SKYNET
     masterProgram = max(fitnessList)[1]
     return masterProgram
